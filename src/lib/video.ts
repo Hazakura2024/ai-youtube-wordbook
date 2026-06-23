@@ -57,20 +57,20 @@ export async function createVideoWordbook(formData: FormData) {
     redirect(`/videos/${existingVideo.id}`);
   }
 
-  // モックデータ
-  const mockSubtitles =
-    "I want to comprehend this difficult concept. Let's research about next.js architecture.";
-  const mockTitle = "Learn Next.js Architecture Principles";
+  const [title, subtitles] = await Promise.all([
+    getYoutubeTitle(youtubeId),
+    getYoutubeSubtitles(youtubeId),
+  ]);
   const thumbnailUrl = `https://img.youtube.com/vi/${youtubeId}/mqdefault.jpg`;
-
-  const cards = await generateWordCardsFormSubtitles(mockSubtitles);
-
+  // AIで単語カードを生成
+  const cards = await generateWordCardsFormSubtitles(subtitles);
+  // DBに親レコード（Video）と子レコード（Card）を一括保存
   const newVideo = await prisma.video.create({
     data: {
       youtubeId,
-      title: mockTitle,
+      title,
       thumbnailUrl,
-      subtitles: mockSubtitles,
+      subtitles,
       cards: {
         create: cards,
       },

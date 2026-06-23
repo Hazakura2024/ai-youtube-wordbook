@@ -4,6 +4,7 @@ import { prisma } from "@/prisma";
 import { redirect } from "next/navigation";
 import { generateWordCardsFormSubtitles } from "./ai";
 import { revalidatePath } from "next/cache";
+import { YoutubeTranscript } from "youtube-transcript";
 
 // youtube動画のURLからIDを取り出す関数
 function extractYoutubeId(url: string): string | null {
@@ -24,6 +25,19 @@ async function getYoutubeTitle(youtubeId: string): Promise<string> {
     return data.title || "無題のYouTube動画";
   } catch (error) {
     return "YouTube動画"; // エラー時のフォールバック
+  }
+}
+
+async function getYoutubeSubtitles(youtubeId: string): Promise<string> {
+  try {
+    const transcript = await YoutubeTranscript.fetchTranscript(youtubeId);
+    // 全ての字幕行をスペースで結合して1つの大きな英語テキストにする
+    return transcript.map((item) => item.text).join(" ");
+  } catch (error) {
+    console.error(error);
+    throw new Error(
+      "字幕の取得に失敗しました。この動画には英語の字幕（自動生成含む）が設定されていない可能性があります。",
+    );
   }
 }
 

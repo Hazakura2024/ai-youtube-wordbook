@@ -2,6 +2,7 @@ import { prisma } from "@/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { FlashCard } from "./_components/FlashCard";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -62,20 +63,16 @@ export default async function VideoDetailPage({ params }: PageProps) {
               単語カード ({video.cards.length})
             </h2>
 
-            <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+            <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
               {video.cards.map((card) => (
-                <div
+                <FlashCard
                   key={card.id}
-                  className="border p-4 rounded-lg bg-white dark:bg-zinc-900 shadow-sm"
-                >
-                  {/* TODO: ここにめくれるカードコンポーネントを配置します */}
-                  <h3 className="font-bold text-lg text-blue-600 dark:text-blue-400">
-                    {card.word}
-                  </h3>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-300 mt-1">
-                    {card.meaning}
-                  </p>
-                </div>
+                  word={card.word}
+                  meaning={card.meaning}
+                  englishSentence={card.englishSentence}
+                  japaneseSentence={card.japaneseSentence}
+                  context={card.context}
+                />
               ))}
             </div>
           </div>

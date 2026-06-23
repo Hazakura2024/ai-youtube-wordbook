@@ -44,7 +44,7 @@ generateObject は、Vercel AI SDK が提供する超強力な関数で、実行
 
 export async function generateWordCardsFormSubtitles(subtitles: string) {
   const { output } = await generateText({
-    model: google("gemini-1.5-flash"),
+    model: google("gemini-2.5-flash"),
     prompt: `Analyze the following English video subtitles and extract 5 key vocabulary words or phrases for English learners.
     For each word, provide its meaning in Japanese, an example sentence, its Japanese translation, and a brief context/explanation.
     Subtitles:

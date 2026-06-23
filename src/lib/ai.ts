@@ -4,7 +4,7 @@ import { google } from "@ai-sdk/google";
 
 // APIを叩く
 
-// Zodで肩を定義
+// Zodで型を定義
 const CardSchema = z.object({
   cards: z.array(
     z.object({

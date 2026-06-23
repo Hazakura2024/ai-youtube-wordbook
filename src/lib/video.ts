@@ -13,6 +13,20 @@ function extractYoutubeId(url: string): string | null {
   return match && match[2].length === 11 ? match[2] : null;
 }
 
+// タイトルを取得
+async function getYoutubeTitle(youtubeId: string): Promise<string> {
+  try {
+    const response = await fetch(
+      `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${youtubeId}&format=json`,
+    );
+    if (!response.ok) throw new Error();
+    const data = await response.json();
+    return data.title || "無題のYouTube動画";
+  } catch (error) {
+    return "YouTube動画"; // エラー時のフォールバック
+  }
+}
+
 // フロントのフォームから呼び出される関数本体
 export async function createVideoWordbook(formData: FormData) {
   const youtubeUrl = formData.get("youtubeUrl") as string;

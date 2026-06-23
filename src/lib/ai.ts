@@ -45,7 +45,11 @@ generateObject は、Vercel AI SDK が提供する超強力な関数で、実行
 export async function generateWordCardsFormSubtitles(subtitles: string) {
   const { output } = await generateText({
     model: google("gemini-2.5-flash"),
-    prompt: `Analyze the following English video subtitles and extract 5 key vocabulary words or phrases for English learners.
+    prompt: `Analyze the following English video subtitles and extract 5 advanced vocabulary words or phrases.
+    [CRITERIA for word extraction]
+    - Difficulty level: Target CEFR levels B2, C1, or C2 (Upper-Intermediate to Advanced), or words commonly tested in TOEFL, IELTS, Eiken Grade Pre-1/1, or TOEIC 800+.
+    - Exclude common or basic words (e.g., "development", "simple", "framework", "learn", "create").
+    - Focus on formal, academic, idiomatic, or sophisticated words that intermediate learners might struggle with.
     For each word, provide its meaning in Japanese, an example sentence, its Japanese translation, and a brief context/explanation.
     Subtitles:
     ${subtitles}`,
